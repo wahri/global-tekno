@@ -76,7 +76,7 @@
                                         <th>Total Harga</th>
                                         <th>Kasir</th>
                                         <th>Tanggal</th>
-                                        <th>Aksi</th>
+                                        <th width="10%">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,6 +101,9 @@
                                                         <i class="bx bx-trash"></i> Hapus
                                                     </button>
                                                 </form>
+                                                <a target="_blank" href="{{ route('report.sales.print', $sale->id) }}" class="btn btn-info btn-sm">
+                                                    <i class="bx bx-printer"></i> Print
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -173,7 +176,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <template x-for="(item, index) in detail.items" :key="item.id">
+                                    <template x-for="(item, index) in detail.items" :key="index">
                                         <tr>
                                             <td x-text="index + 1"></td>
                                             <td x-text="`(${item.product_code}) ${item.product_name}`"></td>

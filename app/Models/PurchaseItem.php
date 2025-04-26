@@ -15,4 +15,8 @@ class PurchaseItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function saleItemDetails()
+    {
+        return $this->hasMany(SaleItemDetail::class);
+    }
 }

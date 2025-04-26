@@ -9,6 +9,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Services\FifoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -88,10 +89,22 @@ class ReportController extends Controller
         return view('pages.report.sale-items', compact('saleItems', 'categories'));
     }
 
+    public function printInvoice(string $id)
+    {
+        $sale = Sale::with(['saleItems.product', 'cashier'])->findOrFail($id);
+
+        return view('pages.report.print-invoice', compact('sale'));
+    }
+    public function printPurchases(string $id)
+    {
+        $purchase = Purchase::with(['purchaseItems', 'purchaseItems.product', 'user'])->findOrFail($id);
+
+        return view('pages.report.print-purchase', compact('purchase'));
+    }
 
     public function purchases(Request $request)
     {
-        $purchaseQuery = Purchase::query();
+        $purchaseQuery = Purchase::with(['purchaseItems','purchaseItems.product', 'user']);
 
         // Filter by start and end date
         if ($request->has('start_date') && $request->has('end_date')) {
@@ -122,7 +135,7 @@ class ReportController extends Controller
                     $request->input('end_date')
                 ]);
             });
-        }else if ($request->has('month')) {
+        } else if ($request->has('month')) {
             $purchaseQuery->whereHas('purchase', function ($query) use ($request) {
                 $query->whereMonth('created_at', date('m', strtotime($request->input('month'))))
                     ->whereYear('created_at', date('Y', strtotime($request->input('month'))));
@@ -133,5 +146,40 @@ class ReportController extends Controller
         $categories = Category::all();
 
         return view('pages.report.purchase-items', compact('purchaseItems', 'categories'));
+    }
+
+    public function deletePurchases(string $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $purchase = Purchase::findOrFail($id);
+
+            // Check if any purchase item has been used (remaining_quantity < quantity)
+            $usedQuantity = $purchase->purchaseItems()
+                ->whereColumn('remaining_quantity', '<', 'quantity')
+                ->count();
+
+            if ($usedQuantity > 0) {
+                throw new \Exception('Cannot delete purchase with used quantity.');
+            }
+
+            // Delete the purchase items and adjust stock
+            foreach ($purchase->purchaseItems as $item) {
+                $item->product->decrement('stock', $item->quantity);
+                $item->delete();
+            }
+
+            // Delete the purchase
+            $purchase->delete();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Purchase deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('report.purchases')->with('error', 'Failed to delete purchase: ' . $e->getMessage());
+        }
     }
 }

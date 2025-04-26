@@ -48,8 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/report')->name('report.')->controller(ReportController::class)->group(function () {
         Route::get('/sales', 'sales')->name('sales');
         Route::delete('/sales/{id}', 'deleteSales')->name('sales.destroy');
+        Route::get('/sales/{id}/print', 'printInvoice')->name('sales.print');
         Route::get('/sale-items', 'saleItems')->name('saleItems');
+
         Route::get('/purchases', 'purchases')->name('purchases');
+        Route::get('/purchases/{id}/print', 'printPurchases')->name('purchases.print');
+        Route::delete('/purchases/{id}', 'deletePurchases')->name('purchases.destroy');
         Route::get('/purchase-items', 'purchaseItems')->name('purchaseItems');
 
     });
