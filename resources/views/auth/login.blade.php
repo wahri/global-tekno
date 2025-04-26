@@ -50,9 +50,9 @@
                                         <form class="row g-3" action="{{ route('login') }}" method="POST">
                                             @csrf
                                             <div class="col-12">
-                                                <label for="username" class="form-label">NIM/NIK/NIP</label>
+                                                <label for="username" class="form-label">Username</label>
                                                 <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username"
-                                                    placeholder="Ketik NIM/NIK/NIP" value="{{ old('username') }}">
+                                                    placeholder="Ketik Username" value="{{ old('username') }}" autofocus>
                                                 @error('username')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror

@@ -18,27 +18,64 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
-        <li class="menu-label">Data Master</li>
         <li>
-            <a href="#">
-                <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i>
+            <a href="{{ route('cashier.index') }}" class="">
+                <div class="parent-icon"><i class='bx bx-cart-alt'></i>
                 </div>
-                <div class="menu-title">Barang</div>
+                <div class="menu-title">Kasir</div>
             </a>
         </li>
         <li>
-            <a href="#">
-                <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i>
+            <a href="{{ route('restock.index') }}" class="">
+                <div class="parent-icon"><i class='bx bx-cart-alt'></i>
                 </div>
-                <div class="menu-title">Kategori</div>
+                <div class="menu-title">Restock Barang</div>
             </a>
         </li>
+
         <li>
-            <a href="#">
-                <div class="parent-icon"><i class='bx bx-briefcase-alt-2'></i>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-cart-alt'></i>
                 </div>
-                <div class="menu-title">Supplier</div>
+                <div class="menu-title">Laporan</div>
             </a>
+            <ul>
+                <li> 
+                    <a href="{{ route('report.sales') }}">
+                        <i class="bx bx-right-arrow-alt"></i>Nota Penjualan
+                    </a>
+                </li>
+                <li> 
+                    <a href="{{ route('report.saleItems') }}">
+                        <i class="bx bx-right-arrow-alt"></i>Penjualan Barang
+                    </a>
+                </li>
+                <li> 
+                    <a href="{{ route('report.purchases') }}">
+                        <i class="bx bx-right-arrow-alt"></i>Nota Pembelian
+                    </a>
+                </li>
+                <li> 
+                    <a href="{{ route('report.purchaseItems') }}">
+                        <i class="bx bx-right-arrow-alt"></i>Pembelian Barang
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-cart-alt'></i>
+                </div>
+                <div class="menu-title">Data Master</div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('products.index') }}"><i class="bx bx-right-arrow-alt"></i>Barang</a>
+                </li>
+                <li> <a href="{{ route('categories.index') }}"><i class="bx bx-right-arrow-alt"></i>Kategori</a>
+                </li>
+                <li> <a href="{{ route('suppliers.index') }}"><i class="bx bx-right-arrow-alt"></i>Supplier</a>
+                </li>
+            </ul>
         </li>
     </ul>
     <!--end navigation-->

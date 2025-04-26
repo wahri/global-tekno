@@ -18,6 +18,10 @@
     <script src="{{ asset('assets/js/pace.min.js') }}"></script>
     <!-- Bootstrap CSS -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <link href="{{ asset('assets/css/bootstrap-extended.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
@@ -26,6 +30,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/dark-theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/semi-dark.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/header-colors.css') }}" />
+
     <title>{{ $title ?? 'Dashboard' }} – Sistem POS</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -65,7 +70,25 @@
     <script src="{{ asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatable/js/dataTables.bootstrap5.min.js') }}"></script>
 
+    <script>
+        function formatRupiah(input) {
+            let value = input.value;
+
+            // Hapus titik pemisah ribuan sebelumnya
+            value = value.replace(/\./g, '');
+
+            // Pastikan input tidak kosong dan merupakan angka
+            if (!isNaN(value) && value.length > 0) {
+                // Format angka dengan pemisah ribuan
+                input.value = parseInt(value).toLocaleString('id-ID');
+            } else {
+                input.value = ''; // Jika input kosong atau bukan angka, set ke kosong
+            }
+        }
+    </script>
+
     @stack('js')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!--app JS-->
     <script src="{{ asset('assets/js/app.js') }}"></script>
 </body>
