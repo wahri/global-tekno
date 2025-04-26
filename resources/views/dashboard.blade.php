@@ -71,6 +71,17 @@
             </div>
         </div><!--end row-->
 
+        <div class="row">
+            <div class="col-12">
+                <hr />
+                <div class="card">
+                    <div class="card-body">
+                        <div id="summaryChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 @endsection
@@ -86,12 +97,12 @@
     <script src="{{ asset('assets/plugins/apexcharts-bundle/js/apexcharts.min.js') }}"></script>
 
     <script>
-        $(document).ready(function () {
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
-            const chartConfigs = [
-                {
+        $(document).ready(function() {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            ];
+
+            const chartConfigs = [{
                     id: "#chartTotalOrder",
                     name: "Total Pesanan",
                     color: "#8833ff",
@@ -116,8 +127,13 @@
                     data: @json($totalProductsPerMonth),
                 }
             ];
-    
-            function renderMiniChart({id, name, color, data}) {
+
+            function renderMiniChart({
+                id,
+                name,
+                color,
+                data
+            }) {
                 const options = {
                     series: [{
                         name: name,
@@ -126,8 +142,12 @@
                     chart: {
                         type: 'area',
                         height: 65,
-                        toolbar: { show: false },
-                        zoom: { enabled: false },
+                        toolbar: {
+                            show: false
+                        },
+                        zoom: {
+                            enabled: false
+                        },
                         dropShadow: {
                             enabled: true,
                             top: 3,
@@ -136,14 +156,18 @@
                             opacity: 0.12,
                             color: color
                         },
-                        sparkline: { enabled: true }
+                        sparkline: {
+                            enabled: true
+                        }
                     },
                     markers: {
                         size: 0,
                         colors: [color],
                         strokeColors: "#fff",
                         strokeWidth: 2,
-                        hover: { size: 7 }
+                        hover: {
+                            size: 7
+                        }
                     },
                     plotOptions: {
                         bar: {
@@ -152,7 +176,9 @@
                             endingShape: 'rounded'
                         }
                     },
-                    dataLabels: { enabled: false },
+                    dataLabels: {
+                        enabled: false
+                    },
                     stroke: {
                         show: true,
                         width: 2.4,
@@ -162,26 +188,105 @@
                     xaxis: {
                         categories: months
                     },
-                    fill: { opacity: 1 },
+                    fill: {
+                        opacity: 1
+                    },
                     tooltip: {
                         theme: 'dark',
-                        fixed: { enabled: false },
-                        x: { show: false },
+                        fixed: {
+                            enabled: false
+                        },
+                        x: {
+                            show: false
+                        },
                         y: {
                             title: {
-                                formatter: function () { return '' }
+                                formatter: function() {
+                                    return ''
+                                }
                             }
                         },
-                        marker: { show: false }
+                        marker: {
+                            show: false
+                        }
                     }
                 };
-    
+
                 const chart = new ApexCharts(document.querySelector(id), options);
                 chart.render();
             }
-    
+
             chartConfigs.forEach(renderMiniChart);
+
+
+            var options = {
+                series: [{
+                    name: 'Penjualan',
+                    type: 'column',
+                    data: @json($totalIncomePerMonth)
+                },{
+                    name: 'Pembelian',
+                    type: 'column',
+                    data: @json($totalExpensesPerMonth)
+                }, {
+                    name: 'Laba Bersih',
+                    type: 'line',
+                    data: @json($totalProfitPerMonth)
+                }],
+                chart: {
+                    foreColor: '#9ba7b2',
+                    height: 350,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    },
+                    toolbar: {
+                        show: true
+                    },
+                },
+                stroke: {
+                    width: [0, 4]
+                },
+                plotOptions: {
+                    bar: {
+                        //horizontal: true,
+                        columnWidth: '35%',
+                        endingShape: 'rounded'
+                    }
+                },
+                grid: {
+                    show: true,
+                    borderColor: 'rgba(0, 0, 0, 0.15)',
+                    strokeDashArray: 4,
+                },
+                colors: ["#8833ff", "#f41127", "#29cc39"],
+                title: {
+                    text: 'Ringkasan Laporan Bulanan',
+                },
+                dataLabels: {
+                    enabled: true,
+                    enabledOnSeries: [1]
+                },
+                labels: months,
+                xaxis: {
+                    categories: months,
+                    title: {
+                        text: 'Bulan'
+                    }
+                },
+                yaxis: [{
+                    title: {
+                        text: 'Total Penjualan',
+                    },
+                }, {
+                    opposite: true,
+                    title: {
+                        text: 'Total Pembelian',
+                    }
+                }]
+            };
+            var chart = new ApexCharts(document.querySelector("#summaryChart"), options);
+            chart.render();
         });
     </script>
-    
 @endpush

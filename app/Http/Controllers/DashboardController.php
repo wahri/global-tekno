@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Sale;
+use App\Models\SaleItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -45,6 +46,13 @@ class DashboardController extends Controller
             ->orderBy('month')
             ->get()->pluck('total', 'month');
 
+        $totalHppPerMonth = SaleItem::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(hpp) as total')
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()->pluck('total', 'month');
+
+
         $totalExpensesPerMonth = Purchase::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(total_amount) as total')
             ->whereYear('created_at', $year)
             ->groupBy('month')
@@ -68,6 +76,7 @@ class DashboardController extends Controller
             $monthKey = Carbon::createFromDate($year, $i, 1)->format('Y-m');
             $arrayPerMonth['totalOrdersPerMonth'][] = (int) ($totalOrdersPerMonth[$monthKey] ?? 0);
             $arrayPerMonth['totalIncomePerMonth'][] = (int) ($totalIncomePerMonth[$monthKey] ?? 0);
+            $arrayPerMonth['totalProfitPerMonth'][] =  (int) ($totalIncomePerMonth[$monthKey] ?? 0) - (int) ($totalHppPerMonth[$monthKey] ?? 0);
             $arrayPerMonth['totalExpensesPerMonth'][] = (int) ($totalExpensesPerMonth[$monthKey] ?? 0);
             $arrayPerMonth['totalProductsPerMonth'][] = (int) ($totalProductsPerMonth[$monthKey] ?? 0);
         }
@@ -79,6 +88,7 @@ class DashboardController extends Controller
             'totalProducts' => $totalProducts,
             'totalOrdersPerMonth' => $arrayPerMonth['totalOrdersPerMonth'],
             'totalIncomePerMonth' => $arrayPerMonth['totalIncomePerMonth'],
+            'totalProfitPerMonth' => $arrayPerMonth['totalProfitPerMonth'],
             'totalExpensesPerMonth' => $arrayPerMonth['totalExpensesPerMonth'],
             'totalProductsPerMonth' => $arrayPerMonth['totalProductsPerMonth'],
         ]);

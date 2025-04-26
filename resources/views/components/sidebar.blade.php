@@ -20,7 +20,7 @@
         </li>
         <li>
             <a href="{{ route('cashier.index') }}" class="">
-                <div class="parent-icon"><i class='bx bx-cart-alt'></i>
+                <div class="parent-icon"><i class='bx bx-scan'></i>
                 </div>
                 <div class="menu-title">Kasir</div>
             </a>
@@ -35,7 +35,7 @@
 
         <li>
             <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class='bx bx-cart-alt'></i>
+                <div class="parent-icon"><i class='bx bx-line-chart'></i>
                 </div>
                 <div class="menu-title">Laporan</div>
             </a>
@@ -64,7 +64,7 @@
         </li>
         <li>
             <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class='bx bx-cart-alt'></i>
+                <div class="parent-icon"><i class='bx bx-command'></i>
                 </div>
                 <div class="menu-title">Data Master</div>
             </a>
@@ -79,7 +79,7 @@
         </li>
         <li>
             <a href="{{ route('users.index') }}" class="">
-                <div class="parent-icon"><i class='bx bx-users'></i>
+                <div class="parent-icon"><i class='bx bx-user'></i>
                 </div>
                 <div class="menu-title">Data User</div>
             </a>
