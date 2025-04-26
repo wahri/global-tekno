@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RestockController;
 use App\Http\Controllers\SaleReportController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
     Route::resource('suppliers', SupplierController::class);
+    Route::resource('users', UserController::class);
 
     Route::prefix('/cashier')->name('cashier.')->controller(CashierController::class)->group(function () {
         Route::get('/', 'index')->name('index');

@@ -27,43 +27,43 @@
                                 @csrf
                                 @method('patch')
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">NIM/NIK/NIP</label>
-                                    <input type="text" class="form-control" id="username" name="username"
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control"
                                         value="{{ auth()->user()->username }}" disabled>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-12">
 
                                         <div class="mb-3">
                                             <label for="name" class="form-label">Name</label>
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ auth()->user()->name }}" required>
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
+                                                value="{{ old('name', auth()->user()->name) }}" required>
+                                            @error('name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
+
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email"
-                                                value="{{ auth()->user()->email }}">
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
+                                                value="{{ old('email', auth()->user()->email) }}" required>
+                                            @error('email')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-6">
 
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">Phone</label>
-                                            <input type="text" class="form-control" id="phone" name="phone"
-                                                value="{{ auth()->user()->phone }}">
+                                            <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone"
+                                                value="{{ old('phone', auth()->user()->phone) }}" required>
+                                            @error('phone')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="prodi" class="form-label">Program Studi</label>
-                                            <input type="text" class="form-control" id="prodi" name="prodi"
-                                                value="{{ auth()->user()->prodi }}">
-                                        </div>
-
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Update</button>

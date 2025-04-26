@@ -77,6 +77,13 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <a href="{{ route('users.index') }}" class="">
+                <div class="parent-icon"><i class='bx bx-users'></i>
+                </div>
+                <div class="menu-title">Data User</div>
+            </a>
+        </li>
     </ul>
     <!--end navigation-->
 </div>
