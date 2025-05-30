@@ -13,8 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('pages.users.index', compact('users'));
+        $admins = User::role('admin')->get();
+        $cashiers = User::role('cashier')->get();
+        return view('pages.users.index', compact('admins', 'cashiers'));
     }
 
     /**
@@ -31,6 +32,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'role' => 'required|in:admin,cashier',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'username' => 'required|string|max:255|unique:users,username',
@@ -39,13 +41,14 @@ class UserController extends Controller
         ]);
 
         try {
-            User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'username' => $request->username,
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
             ]);
+            $user->assignRole($request->role);
             return redirect()->route('users.index')->with('success', 'User created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to create user: ' . $e->getMessage());
@@ -76,6 +79,7 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
+            'role' => 'required|in:admin,cashier',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'username' => 'required|string|max:255|unique:users,username,' . $id,
@@ -91,6 +95,8 @@ class UserController extends Controller
             ]);
             $user->password = Hash::make($request->password);
         }
+
+        $user->syncRoles($request->role);
 
         $user->name = $request->name;
         $user->email = $request->email;

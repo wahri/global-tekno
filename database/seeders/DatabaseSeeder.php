@@ -10,6 +10,7 @@ use App\Models\Supplier;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,11 +21,22 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $roleAdmin = Role::create(['name' => 'admin']);
+        $roleCashier = Role::create(['name' => 'cashier']);
+
+        $admin = User::factory()->create([
             'name' => 'Administrator',
             'email' => 'admin@gmail.com',
             'username' => 'admin',
         ]);
+        $admin->assignRole($roleAdmin);
+
+        $cashier = User::factory()->create([
+            'name' => 'Cashier',
+            'email' => 'cashier@gmail.com',
+            'username' => 'cashier',
+        ]);
+        $cashier->assignRole($roleCashier);
 
         Category::insert([
             [

@@ -17,23 +17,11 @@ Route::get('/', function () {
 });
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+Route::middleware(['auth','role:admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('users', UserController::class);
-
-    Route::prefix('/cashier')->name('cashier.')->controller(CashierController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/addToCart', 'addToCart')->name('addToCart');
-        Route::post('/scanCode', 'scanCode')->name('scanCode');
-        Route::post('/submitOrder', 'submitOrder')->name('submitOrder');
-        Route::put('/updateCart/{id}', 'updateCart')->name('updateCart');
-        Route::delete('/removeFromCart/{id}', 'removeFromCart')->name('removeFromCart');
-        Route::delete('/clearCart', 'clearCart')->name('clearCart');
-    });
 
     Route::prefix('/restock')->name('restock.')->controller(RestockController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -57,7 +45,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/purchase-items', 'purchaseItems')->name('purchaseItems');
 
     });
+});
 
+Route::group(['middleware' => ['role:admin|cashier']],function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('/cashier')->name('cashier.')->controller(CashierController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/addToCart', 'addToCart')->name('addToCart');
+        Route::post('/scanCode', 'scanCode')->name('scanCode');
+        Route::post('/submitOrder', 'submitOrder')->name('submitOrder');
+        Route::put('/updateCart/{id}', 'updateCart')->name('updateCart');
+        Route::delete('/removeFromCart/{id}', 'removeFromCart')->name('removeFromCart');
+        Route::delete('/clearCart', 'clearCart')->name('clearCart');
+    });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

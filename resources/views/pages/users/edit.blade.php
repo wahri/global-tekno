@@ -19,6 +19,20 @@
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select class="form-select @error('role') is-invalid @enderror" id="role"
+                                    name="role" required>
+                                    <option value="">Pilih Role</option>
+                                    <option value="admin" {{ $selectedUser->getRoleNames()[0] == 'admin' ? 'selected' : '' }}>
+                                        Admin</option>
+                                    <option value="cashier" {{ $selectedUser->getRoleNames()[0] == 'cashier' ? 'selected' : '' }}>
+                                        Kasir</option>
+                                </select>
+                                @error('role')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
                                     id="name" value="{{ old('name', $selectedUser->name) }}" name="name">

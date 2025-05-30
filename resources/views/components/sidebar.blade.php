@@ -11,6 +11,7 @@
     </div>
     <!--navigation-->
     <ul class="metismenu" id="menu">
+        @role(['admin', 'cashier'])
         <li>
             <a href="{{ route('dashboard') }}" class="">
                 <div class="parent-icon"><i class='bx bx-home'></i>
@@ -18,6 +19,7 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
+        @endrole
         <li>
             <a href="{{ route('cashier.index') }}" class="">
                 <div class="parent-icon"><i class='bx bx-scan'></i>
@@ -25,6 +27,7 @@
                 <div class="menu-title">Kasir</div>
             </a>
         </li>
+        @role('admin')
         <li>
             <a href="{{ route('restock.index') }}" class="">
                 <div class="parent-icon"><i class='bx bx-cart-alt'></i>
@@ -84,6 +87,7 @@
                 <div class="menu-title">Data User</div>
             </a>
         </li>
+        @endrole
     </ul>
     <!--end navigation-->
 </div>
